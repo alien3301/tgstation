@@ -199,23 +199,6 @@
 	return MARTIAL_ATTACK_INVALID
 
 /datum/martial_art/kaza_ruk/disarm_act(mob/living/attacker, mob/living/defender)
-	if(defender.check_block(attacker, 0, attacker.name, UNARMED_ATTACK))
-		return MARTIAL_ATTACK_FAIL
-	if(check_streak(attacker, defender))
-		return MARTIAL_ATTACK_SUCCESS
-	var/obj/item/stuff_in_hand = defender.get_active_held_item()
-	if(prob(60) && stuff_in_hand && defender.temporarilyRemoveItemFromInventory(stuff_in_hand))
-		attacker.put_in_hands(stuff_in_hand)
-		defender.visible_message(
-			span_danger("[attacker] disarms [defender]!"),
-			span_userdanger("You're disarmed by [attacker]!"),
-			span_hear("You hear aggressive shuffling!"),
-			COMBAT_MESSAGE_RANGE,
-			attacker,
-		)
-		to_chat(attacker, span_danger("You disarm [defender]!"))
-		playsound(defender, 'sound/items/weapons/thudswoosh.ogg', 50, TRUE, -1)
-		log_combat(attacker, defender, "disarmed (Kaza Ruk)", addition = "(disarmed of [stuff_in_hand])")
 	return MARTIAL_ATTACK_INVALID // normal shove
 
 /// First, determine if we're going to execute our followup attack
