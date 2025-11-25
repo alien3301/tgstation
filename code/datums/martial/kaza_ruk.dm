@@ -16,6 +16,10 @@
 	var/allowed_misses = 2
 	//Follow up delay
 	var/followup_delay = 0.25 SECONDS
+	//Base damage of follow up attacks
+	var/followup_damage = 6
+	//Held item
+	var/holding = null
 	//Consecutive Strike target
 	var/datum/weakref/combo_target
 
@@ -230,27 +234,35 @@
 		if(!prob(50))
 			return
 		source.balloon_alert(source, "followup")
-		addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
+		addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, followup_damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
 		return
 	//Target staggered. Start Consecutive Strikes
 	comboing = TRUE
 	source.balloon_alert(source, "started")
-	addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
+	holding = source.get_active_held_item()
+	addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, followup_damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
 
 /// After our delay, do the followup.
 
 /datum/martial_art/kaza_ruk/proc/execute_followup(mob/living/source, mob/living/target, damage, attack_type, obj/item/bodypart/affecting, final_armor_block, kicking, limb_sharpness)
 	if(QDELETED(source))
 		return
+	if(!comboing & combo_count > 0)
+		end_combo(source)
+		return
 	if(!combo_target.resolve())
+		end_combo(source)
+		return
+	if(source.get_active_held_item() != holding)
+		end_combo(source)
 		return
 
 	if(!source.Adjacent(target))
 		combo_misses++
-		if(combo_misses > allowed_misses)
+		if(combo_misses > min(allowed_misses + combo_count/10, 5))
 			end_combo(source)
 			return
-		addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
+		addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, followup_damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
 		return
 
 	var/tail_usage = FALSE
@@ -273,18 +285,13 @@
 		source.emote(kicking ? "flip" : "spin")
 	playsound(source, 'sound/effects/hit_punch.ogg', 50, TRUE, -1)
 	source.do_attack_animation(target, ATTACK_EFFECT_KICK)
-	var/wound_bonus
-	if(combo_count == 1)
-		wound_bonus = damage
-	else
-		wound_bonus = -damage
+	target.apply_damage(min(damage+combo_count*0.5, 30), attack_type, affecting, final_armor_block) //Ostensibly, apply a third of our damage again
 	combo_count++
 	combo_misses = 0
-	target.apply_damage(damage, attack_type, affecting, final_armor_block, wound_bonus = wound_bonus, sharpness = limb_sharpness) //Ostensibly, apply a third of our damage again
 	log_combat(source, target, "auto-followup strike (Kaza Ruk)")
 	if(comboing)
 		target.adjust_staggered_up_to(followup_delay, 10 SECONDS)
-		addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
+		addtimer(CALLBACK(src, PROC_REF(execute_followup), source, target, followup_damage, attack_type, affecting, final_armor_block, kicking, limb_sharpness), followup_delay)
 
 /datum/martial_art/kaza_ruk/proc/end_combo(mob/living/source)
 	comboing = FALSE
