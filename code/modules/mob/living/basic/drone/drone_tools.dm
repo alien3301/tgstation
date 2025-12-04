@@ -17,7 +17,7 @@
 	builtintools += new /obj/item/crowbar/drone(src)
 	builtintools += new /obj/item/screwdriver/drone(src)
 	builtintools += new /obj/item/wrench/drone(src)
-	builtintools += new /obj/item/weldingtool/drone(src)
+	builtintools += new /obj/item/weldingtool/largetank/drone(src)
 	builtintools += new /obj/item/wirecutters/drone(src)
 	builtintools += new /obj/item/multitool/drone(src)
 	builtintools += new /obj/item/pipe_dispenser/drone(src)
@@ -69,7 +69,7 @@
 	icon_angle = 0
 	item_flags = NO_MAT_REDEMPTION
 
-/obj/item/weldingtool/drone
+/obj/item/weldingtool/largetank/drone
 	name = "built-in welding tool"
 	desc = "A welding tool built into your chassis."
 	icon = 'icons/obj/items_cyborg.dmi'
