@@ -28,6 +28,7 @@
 	builtintools += new	/obj/item/lightreplacer/drone(src)
 	builtintools += new	/obj/item/storage/bag/construction/drone(src)
 	builtintools += new	/obj/item/storage/bag/sheetsnatcher/drone(src)
+	builtintools += new	/obj/item/blueprints/drone(src)
 
 	for(var/obj/item/tool as anything in builtintools)
 		tool.AddComponent(/datum/component/holderloving, src)
@@ -130,3 +131,8 @@
 	name = "built-in sheet snatcher"
 	desc = "A sheet snatcher built into your chassis"
 	resistance_flags = NONE
+
+/obj/item/blueprints/drone
+	name = "station schematics"
+	desc = "A digital copy of the station blueprints stored in your memory."
+	fluffnotice = "Intellectual Property of Nanotrasen. For use in maintenance drones only."
