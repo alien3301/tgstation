@@ -24,6 +24,10 @@
 	builtintools += new /obj/item/t_scanner/drone(src)
 	builtintools += new /obj/item/analyzer/drone(src)
 	builtintools += new /obj/item/soap/drone(src)
+	builtintools += new /obj/item/airlock_painter/decal/drone(src)
+	builtintools += new	/obj/item/lightreplacer/drone(src)
+	builtintools += new	/obj/item/storage/bag/construction/drone(src)
+	builtintools += new	/obj/item/storage/bag/sheetsnatcher/drone(src)
 
 	for(var/obj/item/tool as anything in builtintools)
 		tool.AddComponent(/datum/component/holderloving, src)
@@ -103,3 +107,26 @@
 	name = "built-in rapid pipe dispenser"
 	desc = "A rapid pipe dispenser built into your chassis."
 	item_flags = NO_MAT_REDEMPTION
+
+/obj/item/airlock_painter/decal/drone
+	name = "built-in decal painter"
+	desc = "A decal painter built into your chassis"
+	icon_state = "decal_sprayer_borg"
+	initial_ink_type = /obj/item/toner/infinite
+
+/obj/item/airlock_painter/decal/cyborg/click_alt(mob/user)
+	return CLICK_ACTION_BLOCKING
+
+/obj/item/lightreplacer/drone
+	name = "built-in light replacer"
+	desc = "A light replacer built into your chassis"
+
+/obj/item/storage/bag/construction/drone
+	name = "built-in construction bag"
+	desc = "A construction bag built into your chassis"
+	resistance_flags = NONE
+
+/obj/item/storage/bag/sheetsnatcher/drone
+	name = "built-in sheet snatcher"
+	desc = "A sheet snatcher built into your chassis"
+	resistance_flags = NONE
