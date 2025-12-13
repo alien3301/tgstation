@@ -38,6 +38,7 @@
 /obj/item/gun/ballistic/bow/divine/proc/on_selected(datum/source, obj/item/nullrod/old_weapon, mob/picker)
 	SIGNAL_HANDLER
 	new /obj/item/storage/bag/quiver/holy(loc)
+	new /obj/item/book/granter/crafting_recipe/fletching(loc)
 
 /// Ashen bow, crafted from watcher sinew and animal bones.
 /obj/item/gun/ballistic/bow/ashenbow
