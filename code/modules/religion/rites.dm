@@ -250,6 +250,7 @@
 	to_chat(user, span_warning("You feel your genes rattled and reshaped. <b>You're becoming something new.</b>"))
 	user.emote("laugh")
 	ADD_TRAIT(user, TRAIT_HOPELESSLY_ADDICTED, "maint_adaptation")
+	ADD_TRAIT(user, TRAIT_STRONG_STOMACH, "maint_adaptation")
 	//addiction sends some nasty mood effects but we want the maint adaption to be enjoyed like a fine wine
 	user.add_mood_event("maint_adaptation", /datum/mood_event/maintenance_adaptation)
 	if(iscarbon(user))
