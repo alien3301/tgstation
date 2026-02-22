@@ -250,6 +250,10 @@
 	decomposition_time = 30 SECONDS
 	stink_particles = /particles/stink
 
+/obj/item/food/badrecipe/moldy/proc/check_liked(mob/living/carbon/human/consumer)
+	if(HAS_TRAIT_FROM(consumer, TRAIT_HOPELESSLY_ADDICTED, "maint_adaptation"))
+		return FOOD_LIKED
+
 /obj/item/food/badrecipe/moldy/bacteria
 	name = "bacteria rich moldy mess"
 	desc = "Not only is this rancid lump of disgusting bile crawling with insect life, \
